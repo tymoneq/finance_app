@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ user.username }}'s Dashboard
+{% endblock %}
+
+
+{% block content %}
+{% include 'dashboard/include/header.html' %}
+<h1>Welcome {{ user.username }} to your financial dashboard</h1>
+
+<p>On this site you can manage your finances effectively.</p>
+{% endblock %}

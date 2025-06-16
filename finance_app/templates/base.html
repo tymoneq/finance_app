@@ -8,15 +8,7 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <header>
-        <h1>Finance App</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-            </ul>
-        </nav>
-
+    
     {% block content %}
 
     {% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ user.username }}'s Budget
+{% endblock %}
+
+
+{% block content %}
+{% include 'dashboard/include/header.html' %}
+<h1>Welcome {{ user.username }} to your budget management page</h1>
+
+<section>
+    <h2>Current Budget Overview</h2>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div>
+            {% for element in budget %}
+            {{ element.label_tag }} {{ element }} {{ element.errors }}
+            {% endfor %}
+
+            {{ formset.management_form }}
+            {% for element in formset %}
+            {{ element.label_tag }} {{ element }} {{ element.errors }}
+            {% endfor %}
+        </div>
+
+        <button>Submit Budget</button>
+
+    </form>
+
+</section>
+
+
+{% endblock %}
