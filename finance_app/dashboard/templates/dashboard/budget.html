@@ -4,32 +4,69 @@
 {{ user.username }}'s Budget
 {% endblock %}
 
-
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 <h1>Welcome {{ user.username }} to your budget management page</h1>
 
 <section>
     <h2>Current Budget Overview</h2>
+    
     <form method="POST">
         {% csrf_token %}
-        
+        {{ formset.management_form }}
+
         <div>
             {% for element in budget %}
-            {{ element.label_tag }} {{ element }} {{ element.errors }}
+                {{ element.label_tag }} {{ element }} {{ element.errors }}
             {% endfor %}
-
-            {{ formset.management_form }}
-            {% for element in formset %}
-            {{ element.label_tag }} {{ element }} {{ element.errors }}
+        </div>
+        
+        <h3>Allocations</h3>
+        <div id="formset-container">
+            {% for form in formset %}
+                <div class="formset-form">
+                    {% for field in form %}
+                        <div>
+                            {{ field.label_tag }} {{ field }} {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
 
-        <button>Submit Budget</button>
+        <!-- Add Category Button -->
+        <button type="button" id="add-form">Add Category</button>
 
+        <!-- Submit Button -->
+        <button type="submit">Submit Budget</button>
     </form>
-
 </section>
 
+<section>
+    <h1>Your Budget Chart</h1>
+    <div>{{ chart|safe }}</div>
+</section>
+{% endblock %}
 
+<!-- Move JavaScript inside a block so it’s included properly -->
+{% block scripts %}
+<script>
+    let formIndex = {{ formset.total_form_count }};
+    document.getElementById("add-form").addEventListener("click", function () {
+        const formContainer = document.getElementById("formset-container");
+        const newForm = formContainer.children[0].cloneNode(true);
+
+        newForm.querySelectorAll("input, select").forEach((input) => {
+            input.name = input.name.replace(/-\d+-/, `-${formIndex}-`);
+            input.id = input.id.replace(/-\d+-/, `-${formIndex}-`);
+            input.value = "";
+        });
+
+        formContainer.appendChild(newForm);
+
+        // Update TOTAL_FORMS
+        document.getElementById("id_allocations-TOTAL_FORMS").value = formIndex + 1;
+        formIndex++;
+    });
+</script>
 {% endblock %}

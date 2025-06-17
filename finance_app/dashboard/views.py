@@ -2,10 +2,14 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-from .forms import BudgetForm, AllocationFormSet
-
+from .forms import BudgetForm, AllocationForm
+from .functions.pieChart import create_pie_chart
+from django.forms import formset_factory
 
 # Create your views here.
+AllocationFormSet = formset_factory(
+    AllocationForm, extra=3, can_delete=True, max_num=20, min_num=1
+)
 
 
 class DashboardView(TemplateView):
@@ -13,6 +17,12 @@ class DashboardView(TemplateView):
 
 
 class BudgetView(View):
+    """View for managing the budget.
+    This view handles both displaying the budget form and processing the submitted data.
+    It includes a form for the budget and a formset for budget allocations.
+    The budget form allows users to set a budget name and amount, while the allocation formset
+    allows users to allocate percentages to various categories.
+    """
 
     def get(self, request, *args, **kwargs):
         budget_form = BudgetForm(prefix="budget")
@@ -27,34 +37,17 @@ class BudgetView(View):
         budget_form = BudgetForm(request.POST, prefix="budget")
         formset = AllocationFormSet(request.POST, prefix="allocations")
 
-        
+        context = {
+            "budget": budget_form,
+            "formset": formset,
+        }
+
         if formset.is_valid() and budget_form.is_valid():
-            percentage_sum = 0
+            # creating pie chart
+            context = create_pie_chart(budget_form, formset, context)
+            return render(request, "dashboard/budget.html", context)
 
-            for form in formset:
-                percentage = form.cleaned_data.get("percentage")
-                if percentage:
-                    percentage_sum += percentage
-
-            # dodaj kategorie others gdy procenty nie sumują się do 100%
-
-            print(f"Total percentage: {percentage_sum}")
-            if percentage_sum != 100:
-                budget_form.add_error(None, "The total percentage must equal 100%")
-                return render(
-                    request,
-                    "dashboard/budget.html",
-                    {"budget": budget_form, "formset": formset},
-                )
-
-                # Process the valid forms
-            return HttpResponseRedirect("/success/")
-
-        return render(
-            request,
-            "dashboard/budget.html",
-            {"budget": budget_form, "formset": formset},
-        )
+        return render(request, "dashboard/budget.html", context)
 
 
 class CreditView(TemplateView):

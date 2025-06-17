@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import formset_factory
+from django.core.validators import MinValueValidator, MaxValueValidator 
 
 CATEGORY_CHOICES = [
     ("education", "Education"),
@@ -35,8 +35,11 @@ class BudgetForm(forms.Form):
 class AllocationForm(forms.Form):
     category = forms.ChoiceField(choices=CATEGORY_CHOICES, label="Category")
     percentage = forms.DecimalField(
-        max_digits=5, decimal_places=2, label="Percentage of Income"
+        max_digits=5, decimal_places=2, label="Percentage of Income", validators=[
+            MinValueValidator(0.01),
+            MaxValueValidator(100.00)
+        ]
     )
 
 
-AllocationFormSet = formset_factory(AllocationForm, extra=3)
+
