@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+
+{% block title %}
+{{ user.username }}'s Budget
+{% endblock %}
+
+{% block content %}
+{% include 'dashboard/include/header.html' %}
+
+<h1>Welcome {{ user.username }} to your budget management page</h1>
+
+{% for budget in budgets %}
+ <div class="budget-card">
+        <h2>Budget Name: {{ budget.budget_name }}</h2>
+        <p>Amount: {{ budget.amount }}</p>
+
+        <p> Categories:</p>
+        <ul>
+            {% for category in budget.allocations.all %}
+            <li>{{ category.category_name }}: {{ category.percentage }}%</li>
+            {% endfor %}
+        </ul>
+</div>
+{% endfor %}
+
+{% endblock %}

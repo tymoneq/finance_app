@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseRedirect
 from .forms import BudgetForm, AllocationForm
 from .functions.pieChart import create_pie_chart
 from django.forms import formset_factory
+from .models import Budget, Category
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # Create your views here.
 AllocationFormSet = formset_factory(
@@ -15,8 +18,7 @@ AllocationFormSet = formset_factory(
 class DashboardView(TemplateView):
     template_name = "dashboard/dashboard.html"
 
-
-class BudgetView(View):
+class BudgetView(LoginRequiredMixin, View):
     """View for managing the budget.
     This view handles both displaying the budget form and processing the submitted data.
     It includes a form for the budget and a formset for budget allocations.
@@ -29,7 +31,7 @@ class BudgetView(View):
         allocation_formset = AllocationFormSet(prefix="allocations")
         return render(
             request,
-            "dashboard/budget.html",
+            "dashboard/budget_creation.html",
             {"budget": budget_form, "formset": allocation_formset},
         )
 
@@ -43,11 +45,46 @@ class BudgetView(View):
         }
 
         if formset.is_valid() and budget_form.is_valid():
-            # creating pie chart
-            context = create_pie_chart(budget_form, formset, context)
-            return render(request, "dashboard/budget.html", context)
 
-        return render(request, "dashboard/budget.html", context)
+            action = request.POST.get("action")
+            
+            # creating pie chart
+            if action == "submit_budget":
+                context = create_pie_chart(budget_form, formset, context)
+                
+            if action == "save_budget":
+                # Save the budget and allocations
+                budget_name = budget_form.cleaned_data.get("budget_name")
+                money_amount = budget_form.cleaned_data.get("money_amount")
+                user = request.user
+                
+                budget = Budget.objects.create(user_name=user, budget_name=budget_name, amount=money_amount)
+                budget.save()
+                
+                for form in formset:
+
+                    category_name = form.cleaned_data.get("category")
+                    percentage = form.cleaned_data.get("percentage")
+                    
+                    if category_name and percentage:
+                        category = Category.objects.create(category_name=category_name, percentage=percentage, budget=budget)
+                        category.save()
+                
+                context["message"] = "Budget and allocations saved successfully."
+                context = create_pie_chart(budget_form, formset, context)
+
+            return render(request, "dashboard/budget_creation.html", context)
+
+        return render(request, "dashboard/budget_creation.html", context)
+
+
+class BudgetListView(LoginRequiredMixin, ListView):
+    template_name = "dashboard/user_budgets.html"
+    model = Budget
+    context_object_name = "budgets"
+    
+    def get_queryset(self):
+        return Budget.objects.prefetch_related("allocations")
 
 
 class CreditView(TemplateView):

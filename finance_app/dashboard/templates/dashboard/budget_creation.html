@@ -14,6 +14,7 @@
     <form method="POST">
         {% csrf_token %}
         {{ formset.management_form }}
+        {{ message }}
 
         <div>
             {% for element in budget %}
@@ -38,7 +39,8 @@
         <button type="button" id="add-form">Add Category</button>
 
         <!-- Submit Button -->
-        <button type="submit">Submit Budget</button>
+        <button type="submit" name='action' value='submit_budget'>Submit Budget</button>
+        <button type="submit" name='action' value='save_budget'>Save Budget</button>
     </form>
 </section>
 
@@ -46,6 +48,11 @@
     <h1>Your Budget Chart</h1>
     <div>{{ chart|safe }}</div>
 </section>
+
+
+
+
+
 {% endblock %}
 
 <!-- Move JavaScript inside a block so it’s included properly -->
