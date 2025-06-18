@@ -2,35 +2,73 @@ import plotly.graph_objects as go
 import plotly.offline as opy
 
 
-def create_pie_chart(budget_form, formset, context):
+class PieChartBuilder:
+    """A class to build pie charts from budget and allocation data."""
+
+    def __init__(self, amount, context):
+        self.amount = amount
+        self.labels = []
+        self.values = []
+        self.percentage_sum = 100
+        self.context = context
+
+    def add_allocation(self, label, percentage):
+        self.percentage_sum -= percentage
+        self.labels.append(label.capitalize())
+        self.values.append(percentage / 100 * self.amount)
+
+    def build_chart(self):
+        if self.percentage_sum > 0:
+            # Add an "Other" category if the percentages do not sum to 100%
+            self.labels.append("Other")
+            self.values.append(self.percentage_sum / 100 * self.amount)
+
+        fig = go.Figure(
+            data=[
+                go.Pie(
+                    labels=self.labels,
+                    values=self.values,
+                    hoverinfo="label+percent+value",
+                    textinfo="label+percent",
+                )
+            ],
+            layout=go.Layout(
+                width=1000,
+                height=800,
+                font=dict(size=20, color="black", family="Arial, sans-serif"),
+            ),
+        )
+
+        self.context["chart"] = opy.plot(fig, auto_open=False, output_type="div")
+        return self.context
+
+
+def create_pie_chart_from_form(budget_form, formset, context):
     """Creates a pie chart based on the budget and allocation form data."""
-    
-    labels = []
-    values = []
-    percentage_sum = 100
-    money_amount = int(budget_form.cleaned_data["money_amount"])
+
+    chart = PieChartBuilder(
+        amount=int(budget_form.cleaned_data["money_amount"]), context=context
+    )
 
     for form in formset:
         percentage = form.cleaned_data.get("percentage")
         if percentage:
-            percentage_sum -= percentage
-            labels.append(form.cleaned_data.get("category").capitalize())
-            values.append(percentage / 100 * money_amount)
+            chart.add_allocation(
+                label=form.cleaned_data.get("category"), percentage=percentage
+            )
 
-    if percentage_sum < 0:
+    if chart.percentage_sum < 0:
         context["error"] = "Total percentage cannot exceed 100%"
         return context
 
-    if percentage_sum > 0:
-        # Add an "Other" category if the percentages do not sum to 100%
-        labels.append("Other")
-        values.append(percentage_sum / 100 * money_amount)
+    return chart.build_chart()
 
-    fig = go.Figure(
-        data=[go.Pie(labels=labels, values=values, hoverinfo="label+percent+value", textinfo="label+percent")],
-        layout=go.Layout(width=1000, height=800, font=dict(size=20, color="black", family="Arial, sans-serif")),
-    )
 
-    chart_html = opy.plot(fig, auto_open=False, output_type="div")
-    context["chart"] = chart_html
-    return context
+def create_pie_chart_from_budget(context, amount):
+    chart = PieChartBuilder(amount, context)
+
+    for allocation in context["allocations"]:
+        chart.add_allocation(
+            label=allocation.category_name, percentage=allocation.percentage
+        )
+    return chart.build_chart()

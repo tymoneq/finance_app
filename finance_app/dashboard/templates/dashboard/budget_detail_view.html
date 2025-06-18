@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ budget.budget_name }} - Budget Detail
+{% endblock %}
+
+{% block content %}
+{% include 'dashboard/include/header.html' %}
+
+<h1>Budget Details for {{ budget.budget_name }}</h1>
+
+{% include 'dashboard/include/budget_details.html' %}
+
+<section>
+    <h1>Your Budget Chart</h1>
+    <div>{{ chart|safe }}</div>
+</section>
+
+
+{% endblock  %}
