@@ -2,18 +2,33 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView, ListView, DeleteView
 from django.http import HttpResponseRedirect
-from .forms import BudgetForm, AllocationForm, LoanForm
-from django.urls import reverse_lazy
-from .functions.pieChart import create_pie_chart_from_form, create_pie_chart_from_budget
-from .functions.loans_total_amount import calculate_total_loan_amount
-from django.forms import formset_factory
-from .models import Budget, Category, Loans
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.forms import formset_factory, modelformset_factory
+from datetime import date
 
+# My functions and models
+from .models import Budget, Category, Loans, Investment, InvestmentsThroughTime
+from .forms import (
+    BudgetForm,
+    AllocationForm,
+    LoanForm,
+    InvestmentForm,
+)
+from .functions.pieChart import (
+    create_pie_chart_from_form,
+    create_pie_chart_from_budget,
+    create_a_pie_chart_from_investments,
+)
+from .functions.line_chart import create_line_chart_from_investments
+from .functions.calculating_total_amount import calculate_total_loan_amount
 
 # Create your views here.
 AllocationFormSet = formset_factory(
     AllocationForm, extra=3, can_delete=True, max_num=20, min_num=1
+)
+InvestmentFormSet = formset_factory(
+    InvestmentForm, extra=3, can_delete=True, max_num=20, min_num=1
 )
 
 
@@ -82,9 +97,9 @@ class BudgetView(LoginRequiredMixin, View):
                 context["message"] = "Budget and allocations saved successfully."
                 context = create_pie_chart_from_form(budget_form, formset, context)
                 context["budget"] = BudgetForm(prefix="budget")  # Reset the budget form
-                context["formset"] = AllocationFormSet(prefix="allocations")  # Reset the
-
-            return render(request, "dashboard/budget_creation.html", context)
+                context["formset"] = AllocationFormSet(
+                    prefix="allocations"
+                )  # Reset the
 
         return render(request, "dashboard/budget_creation.html", context)
 
@@ -95,7 +110,9 @@ class BudgetListView(LoginRequiredMixin, ListView):
     context_object_name = "budgets"
 
     def get_queryset(self):
-        return Budget.objects.prefetch_related("allocations")
+        return Budget.objects.filter(user_name=self.request.user).prefetch_related(
+            "allocations"
+        )
 
 
 class BudgetDetailView(LoginRequiredMixin, TemplateView):
@@ -111,10 +128,10 @@ class BudgetDetailView(LoginRequiredMixin, TemplateView):
         context = create_pie_chart_from_budget(context, budget.amount)
         return context
 
+
 class BudgetDeleteView(LoginRequiredMixin, DeleteView):
     model = Budget
     success_url = reverse_lazy("your_budget")
-
 
 
 class LoanView(LoginRequiredMixin, View):
@@ -160,8 +177,79 @@ class LoanDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("loans")
 
 
-class PortfolioView(TemplateView):
-    pass
+class PortfolioCreationView(LoginRequiredMixin, View):
+    """View for managing the user's investment portfolio.
+    This view handles displaying the portfolio and processing any related actions.
+    It includes a form for adding investments and a form for managing investment categories.
+    """
+
+    def get(self, request, *args, **kwargs):
+        investment_form = InvestmentFormSet()
+        context = {
+            "investment_form": investment_form,
+        }
+
+        return render(request, "dashboard/portfolio_creation.html", context)
+
+    def post(self, request, *args, **kwargs):
+        investment_form = InvestmentFormSet(request.POST)
+        context = {
+            "investment_form": investment_form,
+        }
+
+        if investment_form.is_valid():
+            action = request.POST.get("action")
+            total_sum_of_investments = 0
+
+            for form in investment_form:
+                if form.cleaned_data.get("investment_name"):
+                    investment = form.save(commit=False)
+                    investment.user_name = request.user
+                    investment.save()
+                    total_sum_of_investments += form.cleaned_data.get("amount", 0)
+
+            context["message"] = "Investments submitted successfully."
+
+            # rendering a pie chart
+
+            context = create_a_pie_chart_from_investments(
+                investment_form, context, total_sum_of_investments
+            )
+
+            if action == "save_portfolio_value":
+                current_date = date.today()
+                exists = InvestmentsThroughTime.objects.filter(
+                    user_name=request.user, date=current_date
+                ).exists()
+
+                if not exists:
+                    InvestmentsThroughTime.objects.create(
+                        user_name=request.user,
+                        amount=total_sum_of_investments,
+                        date=current_date,
+                    )
+
+                if exists:
+                    InvestmentsThroughTime.objects.filter(
+                        user_name=request.user, date=current_date
+                    ).update(amount=total_sum_of_investments)
+
+                qs = InvestmentsThroughTime.objects.filter(user_name=request.user).all()
+
+                data = list(qs.values_list("date", "amount"))
+                investments_data = {
+                    "x": [d[0] for d in data],
+                    "y": [d[1] for d in data],
+                }
+                context = create_line_chart_from_investments(
+                    investments_data, context, "Investments Over Time", 'Date', 'Investment Value'
+                )
+
+            context["investment_form"] = (
+                InvestmentFormSet()
+            )  # Reset the formset for new entry
+
+        return render(request, "dashboard/portfolio_creation.html", context)
 
 
 class NetWorthView(TemplateView):

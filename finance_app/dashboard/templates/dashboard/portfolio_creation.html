@@ -1,0 +1,55 @@
+{% extends 'base.html' %} 
+
+
+{% block title %} 
+
+{{ user.username }}'s Portfolio 
+
+{%endblock %} 
+
+{% block content %} 
+{% include 'dashboard/include/header.html' %}
+
+<h1>Welcome {{ user.username }} to your portfolio management page</h1>
+
+<h2>Create a new portfolio</h2>
+
+<section>
+  <form method="POST">
+    
+    {% csrf_token %}
+    {{ investment_form.management_form }}
+    {{ message }}
+
+    <div>
+      {% for investment in investment_form %}
+         <div class="formset-form">
+            {% for field in investment %}
+                {{ field.label_tag }} {{ field }} {{ field.errors }}
+            {% endfor %}
+         </div>
+      {% endfor %}
+
+        <button type="button" id="add-investment" name='action'>Add Investment</button>
+        <button type="submit" name='action' value='submit_portfolio'>Submit Portfolio</button>
+        <button type="submit" name='action' value='save_portfolio_value'>Save Portfolio Value</button>
+
+    </div>
+  </form>
+</section>
+
+<section>
+
+<h1>Your Portfolio Chart</h1>
+<div>{{ pie_chart|safe }}</div>
+
+</section>
+
+<section>
+
+<h1>Your Portfolio Chart</h1>
+<div>{{ line_chart|safe }}</div>
+
+</section>
+
+{% endblock%}

@@ -39,7 +39,7 @@ class PieChartBuilder:
             ),
         )
 
-        self.context["chart"] = opy.plot(fig, auto_open=False, output_type="div")
+        self.context["pie_chart"] = opy.plot(fig, auto_open=False, output_type="div")
         return self.context
 
 
@@ -71,4 +71,14 @@ def create_pie_chart_from_budget(context, amount):
         chart.add_allocation(
             label=allocation.category_name, percentage=allocation.percentage
         )
+    return chart.build_chart()
+
+
+def create_a_pie_chart_from_investments(investment_form, context, amount):
+    chart = PieChartBuilder(amount, context)
+
+    for investment in investment_form:
+        percentage = investment.cleaned_data.get("amount", 0) / amount * 100
+        chart.add_allocation(label=str(investment.cleaned_data.get('investment_name')), percentage=percentage)
+
     return chart.build_chart()

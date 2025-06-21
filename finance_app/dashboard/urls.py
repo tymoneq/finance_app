@@ -10,6 +10,6 @@ urlpatterns = [
     path('budget_delete/<int:pk>/', views.BudgetDeleteView.as_view(), name='budget_delete'),
     path('loans/', views.LoanView.as_view(), name='loans'),
     path('loan_delete/<int:pk>/', views.LoanDeleteView.as_view(), name='loan_delete'),
-    path('portfolio/', views.PortfolioView.as_view(), name='portfolio'),
+    path('portfolio_creation/', views.PortfolioCreationView.as_view(), name='portfolio_creation'),
     path('net-worth/', views.NetWorthView.as_view(), name='net_worth'),
 ]

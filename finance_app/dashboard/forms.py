@@ -1,31 +1,10 @@
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
-from .models import Loans
-
-CATEGORY_CHOICES = [
-    ("education", "Education"),
-    ("savings", "Savings"),
-    ("long-term-investing", "Long Term Investing"),
-    ("offensive-investing", "Offensive Investing"),
-    ("cost-of-living", "Cost of Living"),
-    ("help-others", "Help Others"),
-    ("dreams-and-whims", "Dreams and Whims"),
-    ("food", "Food"),
-    ("transport", "Transport"),
-    ("entertainment", "Entertainment"),
-    ("health", "Health"),
-    ("other", "Other"),
-    ("debt-repayment", "Debt Repayment"),
-    ("vacation", "Vacation"),
-    ("home-improvement", "Home Improvement"),
-    ("miscellaneous", "Miscellaneous"),
-    ("insurance", "Insurance"),
-    ("taxes", "Taxes"),
-    ("gifts", "Gifts"),
-    ("subscriptions", "Subscriptions"),
-    ("pets", "Pets"),
-    ("travel", "Travel"),
-]
+from .models import Loans, Investment
+from .list_and_dictionaries.statuses import (
+    BUDGET_CATEGORY_CHOICES,
+    INVESTMENT_CATEGORIES,
+)
 
 
 class BudgetForm(forms.Form):
@@ -34,7 +13,7 @@ class BudgetForm(forms.Form):
 
 
 class AllocationForm(forms.Form):
-    category = forms.ChoiceField(choices=CATEGORY_CHOICES, label="Category")
+    category = forms.ChoiceField(choices=BUDGET_CATEGORY_CHOICES, label="Category")
     percentage = forms.DecimalField(
         max_digits=5,
         decimal_places=2,
@@ -76,5 +55,29 @@ class LoanForm(forms.ModelForm):
             },
             "due_date": {
                 "required": "Please select a due date.",
+            },
+        }
+
+
+class InvestmentForm(forms.ModelForm):
+    class Meta:
+        model = Investment
+        fields = ["investment_name", "amount", "category_name"]
+        labels = {
+            "investment_name": "Investment Name",
+            "amount": "Investment Amount",
+            "category_name": "Investment Category",
+        }
+        help_texts = {
+            "amount": "Enter the total amount of the investment.",
+        }
+        error_messages = {
+            "investment_name": {
+                "max_length": "This investment name is too long.",
+                "required": "Please enter an investment name.",
+            },
+            "amount": {
+                "required": "Please enter the investment amount.",
+                "invalid": "Enter a valid amount.",
             },
         }
