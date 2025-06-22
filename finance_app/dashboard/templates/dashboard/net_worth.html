@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ user.username }}'s Net Worth
+{% endblock %}
+
+{% block content %}
+
+{% include 'dashboard/include/header.html' %}
+
+<h1>Welcome {{ user.username }} to your net worth management page</h1>
+
+
+<section>
+<div>{{ line_chart|safe }}</div>
+</section>
+{% endblock %}

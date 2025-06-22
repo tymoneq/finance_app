@@ -8,7 +8,14 @@ from django.forms import formset_factory, modelformset_factory
 from datetime import date
 
 # My functions and models
-from .models import Budget, Category, Loans, Investment, InvestmentsThroughTime
+from .models import (
+    Budget,
+    Category,
+    Loans,
+    Investment,
+    InvestmentsThroughTime,
+    NetWorth,
+)
 from .forms import (
     BudgetForm,
     AllocationForm,
@@ -20,7 +27,7 @@ from .functions.pieChart import (
     create_pie_chart_from_budget,
     create_a_pie_chart_from_investments,
 )
-from .functions.line_chart import create_line_chart_from_investments
+from .functions.line_chart import create_line_chart
 from .functions.calculating_total_amount import calculate_total_loan_amount
 
 # Create your views here.
@@ -32,7 +39,16 @@ InvestmentFormSet = formset_factory(
 )
 
 
+# All views in this file are related to the dashboard functionality of the application.
+
+
 class DashboardView(TemplateView):
+    """View for the dashboard.
+    This view serves as the main entry point for the dashboard, providing an overview of the user's
+    financial data, including budgets, loans, and investments.
+    It renders the dashboard template and can be extended to include additional functionality in the future.
+    """
+
     template_name = "dashboard/dashboard.html"
 
 
@@ -105,6 +121,11 @@ class BudgetView(LoginRequiredMixin, View):
 
 
 class BudgetListView(LoginRequiredMixin, ListView):
+    """View for listing all budgets associated with the logged-in user.
+    This view retrieves all budgets created by the user and displays them in a list format.
+    It uses the ListView generic view to handle the retrieval and rendering of the budget data.
+    """
+
     template_name = "dashboard/user_budgets.html"
     model = Budget
     context_object_name = "budgets"
@@ -116,6 +137,13 @@ class BudgetListView(LoginRequiredMixin, ListView):
 
 
 class BudgetDetailView(LoginRequiredMixin, TemplateView):
+    """View for displaying the details of a specific budget.
+    This view retrieves a budget by its primary key (pk) and displays its details,
+    including the budget amount and its associated allocations.
+    It also creates a pie chart from the budget allocations to visualize the distribution of the budget.
+    """
+    
+    
     template_name = "dashboard/budget_detail_view.html"
 
     def get_context_data(self, **kwargs):
@@ -130,6 +158,8 @@ class BudgetDetailView(LoginRequiredMixin, TemplateView):
 
 
 class BudgetDeleteView(LoginRequiredMixin, DeleteView):
+    """View for deleting a budget."""
+    
     model = Budget
     success_url = reverse_lazy("your_budget")
 
@@ -173,6 +203,7 @@ class LoanView(LoginRequiredMixin, View):
 
 
 class LoanDeleteView(LoginRequiredMixin, DeleteView):
+    """View for deleting a loan."""
     model = Loans
     success_url = reverse_lazy("loans")
 
@@ -183,12 +214,24 @@ class PortfolioCreationView(LoginRequiredMixin, View):
     It includes a form for adding investments and a form for managing investment categories.
     """
 
+    def create_chart_data(self, request, context):
+        """Helper function to create chart data for investments."""
+        qs = InvestmentsThroughTime.objects.filter(user_name=request.user).all()
+        context = create_line_chart(
+            context,
+            qs,
+            ["date", "amount"],
+            "Investments Over Time",
+            y_axis_label="Investment Value",
+        )
+        return context
+
     def get(self, request, *args, **kwargs):
         investment_form = InvestmentFormSet()
         context = {
             "investment_form": investment_form,
         }
-
+        context = self.create_chart_data(request, context)
         return render(request, "dashboard/portfolio_creation.html", context)
 
     def post(self, request, *args, **kwargs):
@@ -234,16 +277,7 @@ class PortfolioCreationView(LoginRequiredMixin, View):
                         user_name=request.user, date=current_date
                     ).update(amount=total_sum_of_investments)
 
-                qs = InvestmentsThroughTime.objects.filter(user_name=request.user).all()
-
-                data = list(qs.values_list("date", "amount"))
-                investments_data = {
-                    "x": [d[0] for d in data],
-                    "y": [d[1] for d in data],
-                }
-                context = create_line_chart_from_investments(
-                    investments_data, context, "Investments Over Time", 'Date', 'Investment Value'
-                )
+            context = self.create_chart_data(request, context)
 
             context["investment_form"] = (
                 InvestmentFormSet()
@@ -252,5 +286,54 @@ class PortfolioCreationView(LoginRequiredMixin, View):
         return render(request, "dashboard/portfolio_creation.html", context)
 
 
-class NetWorthView(TemplateView):
-    pass
+class NetWorthView(LoginRequiredMixin, TemplateView):
+    """View for displaying the user's net worth.
+    This view calculates the user's net worth based on their investments and loans,
+    and displays it over time using a line chart.
+    It updates the net worth daily and provides a historical view of the user's financial health.
+    """
+    
+    template_name = "dashboard/net_worth.html"
+
+    def update_net_worth(self, request):
+        current_date = date.today()
+        exists = NetWorth.objects.filter(
+            user_name=request.user, date=current_date
+        ).exists()
+
+        # Calculate total net worth
+        total_net_worth = 0.00
+        total_net_worth -= float(calculate_total_loan_amount(request.user))
+        last_investments = InvestmentsThroughTime.objects.filter(
+            user_name=request.user
+        ).last()
+        last_investments_amount = last_investments.amount if last_investments else 0.00
+        total_net_worth += float(last_investments_amount)
+
+        if not exists:
+            NetWorth.objects.create(
+                user_name=request.user,
+                total_net_worth=total_net_worth,
+                date=current_date,
+            )
+
+        if exists:
+            NetWorth.objects.filter(user_name=request.user, date=current_date).update(
+                total_net_worth=total_net_worth
+            )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self.update_net_worth(self.request)
+        user = self.request.user
+        qs = NetWorth.objects.filter(user_name=user).all()
+
+        context = create_line_chart(
+            context,
+            qs,
+            ["date", "total_net_worth"],
+            "Net Worth Over Time",
+            y_axis_label="Net Worth Value",
+        )
+
+        return context

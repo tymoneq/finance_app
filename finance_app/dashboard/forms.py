@@ -81,3 +81,5 @@ class InvestmentForm(forms.ModelForm):
                 "invalid": "Enter a valid amount.",
             },
         }
+
+

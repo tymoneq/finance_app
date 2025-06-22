@@ -34,19 +34,40 @@ class LineChartBuilder:
             width=1000,
             height=800,
             font=dict(size=20, color="black", family="Arial, sans-serif"),
+            template="plotly_white",
+            xaxis=dict(
+                showgrid=True,
+                gridcolor="LightGray",
+                tickangle=45,
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor="LightGray",
+            ),
+            plot_bgcolor="white",
         )
 
         self.context["line_chart"] = opy.plot(fig, auto_open=False, output_type="div")
         return self.context
-    
-    
-def create_line_chart_from_investments(investments_data, context, title, x_axis_label="Date", y_axis_label="Investment Value"):
-    """Creates a line chart from investments data.
-    
-    investments_data should be a dictionary with 'x' and 'y' keys.
-    """
-    chart = LineChartBuilder(data=investments_data, context=context, title=title,
-                            x_axis_label=x_axis_label, y_axis_label=y_axis_label)
 
-    
+
+def create_line_chart(
+    context, qs, fields, title, x_axis_label="Date", y_axis_label="Value"
+):
+    """Function to create a line chart from a queryset by transforming queryset to the dictionary of keys 'X' and 'Y'."""
+
+    data = list(qs.values_list(*fields))
+    chart_data = {
+        "x": [d[0] for d in data],
+        "y": [d[1] for d in data],
+    }
+
+    chart = LineChartBuilder(
+        data=chart_data,
+        context=context,
+        title=title,
+        x_axis_label=x_axis_label,
+        y_axis_label=y_axis_label,
+    )
+
     return chart.build_chart()

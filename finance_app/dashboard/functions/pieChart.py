@@ -65,6 +65,7 @@ def create_pie_chart_from_form(budget_form, formset, context):
 
 
 def create_pie_chart_from_budget(context, amount):
+    """Creates a pie chart from the budget allocations in the context."""
     chart = PieChartBuilder(amount, context)
 
     for allocation in context["allocations"]:
@@ -75,6 +76,8 @@ def create_pie_chart_from_budget(context, amount):
 
 
 def create_a_pie_chart_from_investments(investment_form, context, amount):
+    """Creates a pie chart from the investment form data."""
+    
     chart = PieChartBuilder(amount, context)
 
     for investment in investment_form:

@@ -77,3 +77,13 @@ class InvestmentsThroughTime(models.Model):
 
     def __str__(self):
         return f"{self.amount} on {self.date}"
+    
+    
+class NetWorth(models.Model):
+    user_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name="net_worth")
+    total_net_worth = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(0.00), MaxValueValidator(10000000000.00)],
+    )
+    date = models.DateField()
