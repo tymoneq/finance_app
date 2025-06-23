@@ -1,5 +1,9 @@
 {%extends 'base.html'%}
 
+{% load static %}
+
+
+
 {% block title %}
 {{ user.username }}'s Budget
 {% endblock %}
@@ -8,6 +12,7 @@
 {% include 'dashboard/include/header.html' %}
 
 <h1>Welcome {{ user.username }} to your budget management page</h1>
+<img src="{% static 'dashboard/images/pie_chart2.jpg' %}" alt="Budget Dashboard">
 
 {% for budget in budgets %}
  <div class="budget-card">

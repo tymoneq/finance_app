@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block title %}
 {{ user.username }}'s Net Worth
@@ -10,7 +10,7 @@
 {% include 'dashboard/include/header.html' %}
 
 <h1>Welcome {{ user.username }} to your net worth management page</h1>
-
+<img src="{% static 'dashboard/images/chart_report1.jpg' %}" alt="Net Worth Dashboard">
 
 <section>
 <div>{{ line_chart|safe }}</div>

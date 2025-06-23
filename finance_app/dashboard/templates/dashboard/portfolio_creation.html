@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-
+{% load static %}
 
 {% block title %} 
 
@@ -11,6 +11,8 @@
 {% include 'dashboard/include/header.html' %}
 
 <h1>Welcome {{ user.username }} to your portfolio management page</h1>
+
+<img src="{% static 'dashboard/images/investor2.jpg' %}" alt="Portfolio Dashboard">
 
 <h2>Create a new portfolio</h2>
 

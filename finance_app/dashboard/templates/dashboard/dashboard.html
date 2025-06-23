@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-
+{% load static %}
 {% block title %} 
 
 {{ user.username }}'s Dashboard 
@@ -11,8 +11,8 @@
 {% include 'dashboard/include/header.html' %}
 <section>
   <h1>Welcome {{ user.username }} to your financial dashboard</h1>
-
   <p>On this site you can manage your finances effectively.</p>
+  <img src="{% static 'dashboard/images/investor1.jpg' %}" alt="Finance Dashboard">
 </section>
 
 <section>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {{ user.username }}'s Budget
@@ -7,6 +8,11 @@
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 <h1>Welcome {{ user.username }} to your budget management page</h1>
+<img src="{% static 'dashboard/images/personal_finances1.jpg' %}" alt="Budget Dashboard">
+
+{% if message %}
+    <div class="alert alert-info">{{ message }}</div>
+{% endif %}
 
 <section>
     <h2>Current Budget Overview</h2>
