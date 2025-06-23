@@ -140,3 +140,5 @@ PASSWORD_HASHERS = [
 ]
 
 LOGIN_URL = "login/"  # URL to redirect to for login
+
+LOGOUT_REDIRECT_URL = '/'

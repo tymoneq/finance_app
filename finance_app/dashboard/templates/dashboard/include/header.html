@@ -8,6 +8,10 @@
       <li><a href="{% url 'loans' %}">Your Loans</a></li>
       <li><a href="{% url 'portfolio_creation' %}">Portfolio Creation</a></li>
       <li><a href="{% url 'net_worth' %}">Your Net Worth</a></li>
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <li><button type="submit">Logout</button></li>
+      </form>
     </ul>
   </nav>
 </header>

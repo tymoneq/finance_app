@@ -1,27 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Login Page
 {% endblock %}
 
 
-
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'login/login.css' %}">
+<link rel="stylesheet" href="{% static 'login/header.css' %}">
+{% endblock %}
 
 {% block content %}
 {% include 'login/include/header.html' %}
-<h1>Login</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    {% for field in form %}
-        <div>
-            {{ field.label_tag }}
-            {{ field }}
-            {{ field.errors }}
-        </div>
-    {% endfor %}
-    <button type="submit">Login</button>
+<div class="parent">
+<section class="login-section">
 
-</form>
+    <div class="login-header">
+        <h1>Login</h1>
+    </div>
 
+    <form method="POST" class="login-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="login-form__submit">Login</button>
+    </form>
+</section>
+</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.DashboardView.as_view(), name='dashboard'),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('loan_delete/<int:pk>/', views.LoanDeleteView.as_view(), name='loan_delete'),
     path('portfolio_creation/', views.PortfolioCreationView.as_view(), name='portfolio_creation'),
     path('net-worth/', views.NetWorthView.as_view(), name='net_worth'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 ]

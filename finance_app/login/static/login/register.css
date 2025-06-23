@@ -1,0 +1,71 @@
+.parent {
+  position: relative;
+  height: 100vh;
+  display: flex;
+}
+
+.register-section {
+  background-color: rgb(248, 150, 4);
+  margin: 0;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40rem;
+  height: auto;
+  text-align: center;
+}
+
+.register-header h1 {
+  color: rgb(0, 0, 0);
+  font-size: 2.5em;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.register-form input {
+  padding: 0.5rem;
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.register-form label {
+  font-size: 1.2em;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+.register-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.register-form__submit {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(248, 4, 4);
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  width: 50%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.register-form__submit:hover,
+.register-form__submit:focus,
+.register-form__submit:active {
+  background-color: rgb(200, 0, 0);
+}

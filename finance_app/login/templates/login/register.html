@@ -1,16 +1,30 @@
 {% extends 'base.html' %} {% block title %} Register Page {% endblock %}
 
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'login/register.css' %}">
+<link rel="stylesheet" href="{% static 'login/header.css' %}">
+{% endblock %}
 
 
 {% block content %}
 {% include 'login/include/header.html' %}
-<h1>Register</h1>
 
-<form method="post">
-  {% csrf_token %} {% for field in form %}
-  <div>{{ field.label_tag }} {{ field }} {{ field.errors }}</div>
-  {% endfor %}
-  <button type="submit">Register</button>
-</form>
+<div class="parent">
+  <section class="register-section">
+      <div class="register-header">
+        <h1>Register</h1>
+      </div>
+    <form method="post" class="register-form">
+      {% csrf_token %} {% for field in form %}
+      <div class="register-form-fields">{{ field.label_tag }} {{ field }} {{ field.errors }}</div>
+      {% endfor %}
+      <button type="submit" class="register-form__submit">Register</button>
+    </form>
+  </section>
+</div>
+
+
 
 {% endblock %}
