@@ -7,8 +7,12 @@
 
 {% block content %}
 {% include 'dashboard/include/header.html' %}
-<h1>Welcome {{ user.username }} to your budget management page</h1>
-<img src="{% static 'dashboard/images/personal_finances1.jpg' %}" alt="Budget Dashboard">
+
+<section>
+    <h1>Welcome {{ user.username }} to your budget management page</h1>
+    <img src="{% static 'dashboard/images/personal_finances1.jpg' %}" alt="Budget Dashboard">
+</section>
+
 
 {% if message %}
     <div class="alert alert-info">{{ message }}</div>

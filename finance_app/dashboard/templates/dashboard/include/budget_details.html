@@ -1,9 +1,13 @@
-<h2>Budget Name: {{ budget.budget_name }}</h2>
-<p>Budget Amount: {{ budget.amount }}</p>
+<section>
+  <h2>Budget Name: {{ budget.budget_name }}</h2>
+  <p>Budget Amount: {{ budget.amount }}</p>
 
-<p>Categories and allocations percentage:</p>
-<ul>
-  {% for category in budget.allocations.all %}
-  <li>{{ category.category_name }}: {{ category.percentage }}%</li>
-  {% endfor %}
-</ul>
+  <div>
+    <p>Categories and allocations percentage:</p>
+    <ul>
+      {% for category in budget.allocations.all %}
+      <li>{{ category.category_name }}: {{ category.percentage }}%</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>

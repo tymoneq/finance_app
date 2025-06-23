@@ -9,41 +9,42 @@
 {% block content %} 
 
 {% include 'dashboard/include/header.html' %}
-<section>
-  <h1>Welcome {{ user.username }} to your financial dashboard</h1>
-  <p>On this site you can manage your finances effectively.</p>
-  <img src="{% static 'dashboard/images/investor1.jpg' %}" alt="Finance Dashboard">
-</section>
+<main>
+  <section>
+    <h1>Welcome {{ user.username }} to your financial dashboard</h1>
+    <p>On this site you can manage your finances effectively.</p>
+    <img src="{% static 'dashboard/images/investor1.jpg' %}" alt="Finance Dashboard">
+  </section>
 
-<section>
-  <h2>Quick Links</h2>
-  <p>
-    Use the navigation menu to access different sections of your financial
-    management system.
-  </p>
-  <p>Here are some quick links to get you started:</p>
-  <ul>
-    <li><a href="{% url 'loans' %}">View and manage your loans</a></li>
-    <li>
-      <a href="{% url 'budget_creation' %}">Create and manage your budget</a>
-    </li>
-    <li>
-      <a href="{% url 'portfolio_creation' %}"
-        >Create and manage your investment portfolio</a
-      >
-    </li>
-    <li><a href="{% url 'net_worth' %}">View your net worth</a></li>
-  </ul>
-</section>
-
-<section>
-  <h2>Thank You for Using Our Finance App!</h2>
+  <section>
+    <h2>Quick Links</h2>
     <p>
-        We hope you find this platform helpful in managing your finances. If you
-        have any questions or need assistance, please feel free to reach out to our
-        support team.
-
+      Use the navigation menu to access different sections of your financial
+      management system.
     </p>
-</section>
+    <p>Here are some quick links to get you started:</p>
+    <ul>
+      <li><a href="{% url 'loans' %}">View and manage your loans</a></li>
+      <li>
+        <a href="{% url 'budget_creation' %}">Create and manage your budget</a>
+      </li>
+      <li>
+        <a href="{% url 'portfolio_creation' %}"
+          >Create and manage your investment portfolio</a
+        >
+      </li>
+      <li><a href="{% url 'net_worth' %}">View your net worth</a></li>
+    </ul>
+  </section>
 
+  <section>
+    <h2>Thank You for Using Our Finance App!</h2>
+      <p>
+          We hope you find this platform helpful in managing your finances. If you
+          have any questions or need assistance, please feel free to reach out to our
+          support team.
+
+      </p>
+  </section>
+</main>
 {% endblock %}

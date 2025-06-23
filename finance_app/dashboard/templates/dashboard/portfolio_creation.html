@@ -10,13 +10,13 @@
 {% block content %} 
 {% include 'dashboard/include/header.html' %}
 
-<h1>Welcome {{ user.username }} to your portfolio management page</h1>
-
-<img src="{% static 'dashboard/images/investor2.jpg' %}" alt="Portfolio Dashboard">
-
-<h2>Create a new portfolio</h2>
+<section>
+  <h1>Welcome {{ user.username }} to your portfolio management page</h1>
+  <img src="{% static 'dashboard/images/investor2.jpg' %}" alt="Portfolio Dashboard">
+</section>
 
 <section>
+  <h2>Create a new portfolio</h2>
   <form method="POST">
     
     {% csrf_token %}
@@ -41,17 +41,13 @@
 </section>
 
 <section>
-
-<h1>Your Portfolio Chart</h1>
-<div>{{ pie_chart|safe }}</div>
-
+  <h1>Your Portfolio Chart</h1>
+  <div>{{ pie_chart|safe }}</div>
 </section>
 
 <section>
-
-<h1>Your Portfolio Chart</h1>
-<div>{{ line_chart|safe }}</div>
-
+  <h1>Your Portfolio Chart</h1>
+  <div>{{ line_chart|safe }}</div>
 </section>
 
-{% endblock%}
+{% endblock %}

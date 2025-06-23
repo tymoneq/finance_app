@@ -9,10 +9,12 @@
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 
-<h1>Welcome {{ user.username }} to your loan management page</h1>
+<section>
+    <h1>Welcome {{ user.username }} to your loan management page</h1>
+    <img src="{% static 'dashboard/images/pie_chart1.jpg' %}" alt="Loan Management Dashboard">
+</section>
 
-<img src="{% static 'dashboard/images/pie_chart1.jpg' %}" alt="Loan Management Dashboard">
-
+<section>
 {% if loans %}
     <div class="loan-summary">
         <h2>Total Loans: {{ loans|length }}</h2>
@@ -47,23 +49,22 @@
 {% else %}
     <p>No loans found for this user.</p>
 {% endif %}
+</section>
 
-
+<section>
 <form method="post">
-
     <h2>Add a New Loan</h2>
     <p>Fill out the form below to add a new loan.</p>
     {% csrf_token %}
-    <div id="formset-container">
+        <div id="formset-container">
             {% for field in loan_form %}
                 <div class="formset-form">
                     {{ field.label_tag }} {{ field }} {{ field.errors }}   
                 </div>
             {% endfor %}
         </div>
-
     <button type="submit">Add Loan</button>
 </form>
-
+</section>
 
 {% endblock %}

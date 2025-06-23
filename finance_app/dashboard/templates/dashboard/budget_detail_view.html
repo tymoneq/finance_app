@@ -8,8 +8,10 @@
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 
-<h1>Budget Details for {{ budget.budget_name }}</h1>
-<img src="{% static 'dashboard/images/money1.jpg' %}" alt="Budget Dashboard">
+<section>
+    <h1>Budget Details for {{ budget.budget_name }}</h1>
+    <img src="{% static 'dashboard/images/money1.jpg' %}" alt="Budget Dashboard">
+</section>
 
 {% include 'dashboard/include/budget_details.html' %}
 
