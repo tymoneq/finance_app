@@ -5,60 +5,69 @@
 {{ user.username }}'s Budget
 {% endblock %}
 
+{% block css_files %}
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
+{% endblock %}
+
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 
-<section>
-    <h1>Welcome {{ user.username }} to your budget management page</h1>
-    <img src="{% static 'dashboard/images/personal_finances1.jpg' %}" alt="Budget Dashboard">
-</section>
+<main class="budget-creation">
+    <section class="welcome-section">
+        <h1>Welcome {{ user.username }} to your budget management page</h1>
+        <img src="{% static 'dashboard/images/personal_finances1.jpg' %}" alt="Budget Dashboard" class="welcome-image">
+    </section>
 
 
-{% if message %}
-    <div class="alert alert-info">{{ message }}</div>
-{% endif %}
+    {% if message %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endif %} 
 
-<section>
-    <h2>Current Budget Overview</h2>
-    
-    <form method="POST">
-        {% csrf_token %}
-        {{ formset.management_form }}
-        {{ message }}
-
-        <div>
-            {% for element in budget %}
-                {{ element.label_tag }} {{ element }} {{ element.errors }}
-            {% endfor %}
-        </div>
+    <section class="budget-form-section">
+        <h2>Current Budget Overview</h2>
         
-        <h3>Allocations</h3>
-        <div id="formset-container">
-            {% for form in formset %}
-                <div class="formset-form">
-                    {% for field in form %}
-                        <div>
-                            {{ field.label_tag }} {{ field }} {{ field.errors }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
+        <form method="POST" class="budget-form">
+            {% csrf_token %}
+            {{ formset.management_form }}
 
-        <!-- Add Category Button -->
-        <button type="button" id="add-form">Add Category</button>
+            <div class="budget-fields form-field" >
+                {% for element in budget %}
+                    {{ element.label_tag }} {{ element }} {{ element.errors }}
+                {% endfor %}
+            </div>
+            
+            <h3>Allocations</h3>
+            <div id="formset-container" class="formset-container">
+                {% for form in formset %}
+                    <div class="formset-form">
+                        {% for field in form %}
+                            <div class="form-field">
+                                {{ field.label_tag }} {{ field }} {{ field.errors }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="form-buttons">
+            <!-- Add Category Button -->
+            <button type="button" id="add-form" class="form_button">Add Category</button>
 
-        <!-- Submit Button -->
-        <button type="submit" name='action' value='submit_budget'>Submit Budget</button>
-        <button type="submit" name='action' value='save_budget'>Save Budget</button>
-    </form>
-</section>
+            <!-- Submit Button -->
+            <button type="submit" name='action' value='submit_budget' class="form_button">Submit Budget</button>
+            <button type="submit" name='action' value='save_budget' class="form_button">Save Budget</button>
+            </div>
+        </form>
+    </section>
 
-<section>
-    <h1>Your Budget Chart</h1>
-    <div>{{ pie_chart|safe }}</div>
-</section>
+    <section class="budget-chart-section">
+        <h1>Your Budget Chart</h1>
+        <div>{{ pie_chart|safe }}</div>
+    </section>
 
+
+</main>
 
 
 

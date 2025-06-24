@@ -5,6 +5,12 @@
 {{ user.username }}'s Net Worth
 {% endblock %}
 
+{% block css_files %}
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
+{% endblock %}
+
+
 {% block content %}
 
 {% include 'dashboard/include/header.html' %}

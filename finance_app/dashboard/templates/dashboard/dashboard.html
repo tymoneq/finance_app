@@ -6,38 +6,47 @@
 
 {% endblock %} 
 
+
+{% block css_files %}
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/dashboard.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
+{% endblock %}
+
 {% block content %} 
 
 {% include 'dashboard/include/header.html' %}
-<main>
-  <section>
-    <h1>Welcome {{ user.username }} to your financial dashboard</h1>
-    <p>On this site you can manage your finances effectively.</p>
-    <img src="{% static 'dashboard/images/investor1.jpg' %}" alt="Finance Dashboard">
+<main class="dashboard-main">
+  <section class="dashboard-welcome">
+    <div class="dashboard-welcome__text">
+      <h1>Welcome {{ user.username }} to your financial dashboard</h1>
+      <p>On this site you can manage your finances effectively.</p>
+    </div>
+    <img src="{% static 'dashboard/images/investor1.jpg' %}" alt="Finance Dashboard" class="dashboard-welcome-image">
   </section>
 
-  <section>
+  <div class="dashboard-overview">
+  <section class="dashboard-quick-links">
     <h2>Quick Links</h2>
     <p>
       Use the navigation menu to access different sections of your financial
       management system.
     </p>
     <p>Here are some quick links to get you started:</p>
-    <ul>
-      <li><a href="{% url 'loans' %}">View and manage your loans</a></li>
-      <li>
+    <ul class="dashboard-quick-links-list">
+      <li class="dashboard-quick-link__li"><a href="{% url 'loans' %}">View and manage your loans</a></li>
+      <li class="dashboard-quick-link__li">
         <a href="{% url 'budget_creation' %}">Create and manage your budget</a>
       </li>
-      <li>
+      <li class="dashboard-quick-link__li">
         <a href="{% url 'portfolio_creation' %}"
           >Create and manage your investment portfolio</a
         >
       </li>
-      <li><a href="{% url 'net_worth' %}">View your net worth</a></li>
+      <li class="dashboard-quick-link__li"><a href="{% url 'net_worth' %}">View your net worth</a></li>
     </ul>
   </section>
 
-  <section>
+  <section class="dashboard-thank-you">
     <h2>Thank You for Using Our Finance App!</h2>
       <p>
           We hope you find this platform helpful in managing your finances. If you
@@ -46,5 +55,8 @@
 
       </p>
   </section>
+</div>
 </main>
+
+
 {% endblock %}

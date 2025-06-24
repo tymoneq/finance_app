@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <title>{% block title %}{% endblock %}</title>
     {% block css_files %}{% endblock %}
 </head>
 <body>
@@ -14,5 +14,10 @@
     {% block content %}
 
     {% endblock %}
+
+    <footer class="documentation-footer">
+        <p>&copy; 2025 Finance App. All rights reserved.</p>
+        <p>Developed by Tymon Tumialis</p>
+    </footer>
 </body>
 </html>

@@ -91,11 +91,17 @@ class BudgetView(LoginRequiredMixin, View):
                 budget_name = budget_form.cleaned_data.get("budget_name")
                 money_amount = budget_form.cleaned_data.get("money_amount")
                 user = request.user
-
-                budget = Budget.objects.create(
-                    user_name=user, budget_name=budget_name, amount=money_amount
-                )
-                budget.save()
+                # Check if a budget with the same name already exists for the user
+                if Budget.objects.filter(user_name=user, budget_name=budget_name).exists():
+                    context["message"] = "A budget with this name already exists."
+                    return render(
+                        request, "dashboard/budget_creation.html", context
+                    )
+                else:
+                    budget = Budget.objects.create(
+                        user_name=user, budget_name=budget_name, amount=money_amount
+                    )
+                    budget.save()
 
                 for form in formset:
 

@@ -1,16 +1,16 @@
-<header>
-  <h1>Finance App Navigation</h1>
-  <nav>
-    <ul>
-      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-      <li><a href="{% url 'budget_creation' %}">Budget Creation</a></li>
-      <li><a href="{% url 'your_budget' %}">Your Budgets</a></li>
-      <li><a href="{% url 'loans' %}">Your Loans</a></li>
-      <li><a href="{% url 'portfolio_creation' %}">Portfolio Creation</a></li>
-      <li><a href="{% url 'net_worth' %}">Your Net Worth</a></li>
-      <form action="{% url 'logout' %}" method="post">
+<header class="header">
+  <h1 class="header__h1">Finance App Navigation</h1>
+  <nav class ="header__nav">
+    <ul class="header__nav__ul">
+      <li class="header__nav__li"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+      <li class="header__nav__li"><a href="{% url 'budget_creation' %}">Budget Creation</a></li>
+      <li class="header__nav__li"><a href="{% url 'your_budget' %}">Your Budgets</a></li>
+      <li class="header__nav__li"><a href="{% url 'loans' %}">Your Loans</a></li>
+      <li class="header__nav__li"><a href="{% url 'portfolio_creation' %}">Portfolio Creation</a></li>
+      <li class="header__nav__li"><a href="{% url 'net_worth' %}">Your Net Worth</a></li>
+      <form action="{% url 'logout' %}" method="post" class="header__nav__form">
         {% csrf_token %}
-        <li><button type="submit">Logout</button></li>
+        <li class="header__nav__li"><button type="submit" class="header__nav__li__button">Logout</button></li>
       </form>
     </ul>
   </nav>

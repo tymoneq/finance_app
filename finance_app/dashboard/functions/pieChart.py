@@ -58,7 +58,7 @@ def create_pie_chart_from_form(budget_form, formset, context):
             )
 
     if chart.percentage_sum < 0:
-        context["error"] = "Total percentage cannot exceed 100%"
+        context["message"] = "Total percentage cannot exceed 100%"
         return context
 
     return chart.build_chart()
