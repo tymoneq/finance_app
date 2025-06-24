@@ -31,7 +31,7 @@ class InvestmentsThroughTimeAdmin(admin.ModelAdmin):
     list_display = ("date", "amount")
     
 class NetWorthAdmin(admin.ModelAdmin):
-    list_display = ("user_name", "total_net_worth")
+    list_display = ("user_name", "total_net_worth",'date')
     list_filter = ("user_name",)
 
 admin.site.register(Budget, BudgetAdmin)
@@ -39,4 +39,4 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Loans, LoansAdmin)
 admin.site.register(Investment, InvestmentAdmin)
 admin.site.register(InvestmentsThroughTime, InvestmentsThroughTimeAdmin)
-admin.site.register(NetWorth)
+admin.site.register(NetWorth, NetWorthAdmin)
