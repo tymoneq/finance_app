@@ -35,7 +35,7 @@ AllocationFormSet = formset_factory(
     AllocationForm, extra=6, can_delete=True, max_num=20, min_num=1
 )
 InvestmentFormSet = formset_factory(
-    InvestmentForm, extra=3, can_delete=True, max_num=20, min_num=1
+    InvestmentForm, extra=9, can_delete=True, max_num=20, min_num=1
 )
 
 

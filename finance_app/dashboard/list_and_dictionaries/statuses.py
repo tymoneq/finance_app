@@ -1,5 +1,6 @@
 INVESTMENT_CATEGORIES = [
     ("Stocks", "Stocks"),
+    ("Gold", "Gold"),
     ("Bonds", "Bonds"),
     ("Real Estate", "Real Estate"),
     ("Mutual Funds", "Mutual Funds"),
