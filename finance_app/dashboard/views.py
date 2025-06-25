@@ -223,13 +223,15 @@ class PortfolioCreationView(LoginRequiredMixin, View):
     def create_chart_data(self, request, context):
         """Helper function to create chart data for investments."""
         qs = InvestmentsThroughTime.objects.filter(user_name=request.user).all()
-        context = create_line_chart(
-            context,
-            qs,
-            ["date", "amount"],
-            "Investments Over Time",
-            y_axis_label="Investment Value",
-        )
+        
+        if qs.exists():
+            context = create_line_chart(
+                context,
+                qs,
+                ["date", "amount"],
+                "Investments Over Time",
+                y_axis_label="Investment Value",
+            )
         return context
 
     def get(self, request, *args, **kwargs):
