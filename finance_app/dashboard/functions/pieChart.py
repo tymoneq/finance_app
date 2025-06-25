@@ -33,8 +33,8 @@ class PieChartBuilder:
                 )
             ],
             layout=go.Layout(
-                width=1000,
-                height=800,
+                width=600,
+                height=600,
                 font=dict(size=20, color="black", family="Arial, sans-serif"),
             ),
         )

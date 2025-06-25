@@ -7,24 +7,30 @@
 
 
 {% block css_files %}
-  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_detail_view.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_details.css' %}">
 {% endblock %}
 
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 
-<section>
-    <h1>Budget Details for {{ budget.budget_name }}</h1>
-    <img src="{% static 'dashboard/images/money1.jpg' %}" alt="Budget Dashboard">
-</section>
+<main class="container">
 
-{% include 'dashboard/include/budget_details.html' %}
+    <section class="budget-header">
+        <h1>Budget Details for {{ budget.budget_name }}</h1>
+        <img src="{% static 'dashboard/images/money1.jpg' %}" alt="Budget Dashboard">
+    </section>
 
-<section>
-    <h1>Your Budget Chart</h1>
-    <div>{{ pie_chart|safe }}</div>
-</section>
-
+    <div class='budget-details-container'>
+    
+        {% include 'dashboard/include/budget_details.html' %}
+    
+    <section class="budget-chart">
+        <h1>Your Budget Chart</h1>
+        <div>{{ pie_chart|safe }}</div>
+    </section>
+    </div>
+</main>
 
 {% endblock  %}

@@ -1,0 +1,11 @@
+.budget-details {
+  font-weight: bold;
+}
+.budget-details__categories ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.budget-details__categories {
+    margin-bottom: 10px;
+}

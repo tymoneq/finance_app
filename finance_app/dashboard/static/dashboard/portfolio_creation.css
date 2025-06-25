@@ -1,0 +1,123 @@
+.main-content {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  margin-bottom: 150rem;
+}
+
+.welcome-section {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 15rem;
+  left: 50%;
+}
+
+.welcome-section h1,
+.welcome-section img {
+  display: inline-block;
+}
+
+.welcome-section img {
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  transform: translateX(10%);
+  width: 30rem;
+}
+.welcome-section h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  margin: 0;
+  transform: translate(5%, -1200%);
+}
+
+.portfolio-creation-section {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 50rem;
+  left: 50%;
+  z-index: 100;
+}
+
+.portfolio-creation-section h2 {
+  font-size: 2.5rem;
+  margin: 0.4rem 0;
+}
+
+.formset-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.formset-form input {
+  padding: 0.1rem;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.formset-form select {
+  padding: 0.1rem;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.formset-form label {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.investment-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(248, 4, 4);
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.investment-buttons:hover,
+.investment-buttons:focus,
+.investment-buttons:active {
+  background-color: darkred;
+}
+
+.portfolio-chart-section-main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  width: 100rem;
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 90rem;
+  left: 50%;
+}
+
+.portfolio-chart-section {
+  width: 45%;
+  height: 50rem;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: white;
+}

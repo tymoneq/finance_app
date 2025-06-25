@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block css_files %}
-  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/loan_view.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
 {% endblock %}
 
@@ -15,62 +15,68 @@
 {% block content %}
 {% include 'dashboard/include/header.html' %}
 
-<section>
-    <h1>Welcome {{ user.username }} to your loan management page</h1>
-    <img src="{% static 'dashboard/images/pie_chart1.jpg' %}" alt="Loan Management Dashboard">
-</section>
+<main class="container">
 
-<section>
-{% if loans %}
-    <div class="loan-summary">
-        <h2>Total Loans: {{ loans|length }}</h2>
-        <h2>Total Amount: {{ total_amount }}</h2>
-    </div>
+    <section class="loan-header">
+        <h1>Welcome {{ user.username }} to your loan management page</h1>
+        <img src="{% static 'dashboard/images/pie_chart1.jpg' %}" alt="Loan Management Dashboard">
+    </section>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Loan Name</th>
-                <th>Amount</th>
-                <th>Interest Rate</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for loan in loans %}
-                <tr>
-                    <td>{{ loan.loan_name }}</td>
-                    <td>{{ loan.amount }}</td>
-                    <td>{{ loan.interest_rate }}%</td>
-                    <td>{{ loan.due_date }}</td>
-                    <td><form method="post" action="{% url 'loan_delete' loan.id %}">
-                        {% csrf_token %}
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this loan?');">Delete</button>
-                    </form></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-{% else %}
-    <p>No loans found for this user.</p>
-{% endif %}
-</section>
-
-<section>
-<form method="post">
-    <h2>Add a New Loan</h2>
-    <p>Fill out the form below to add a new loan.</p>
-    {% csrf_token %}
-        <div id="formset-container">
-            {% for field in loan_form %}
-                <div class="formset-form">
-                    {{ field.label_tag }} {{ field }} {{ field.errors }}   
-                </div>
-            {% endfor %}
+    <section class="loan-summary-container">
+    {% if loans %}
+        <div class="loan-summary">
+            <h2>Total Loans: {{ loans|length }}</h2>
+            <h2>Total Amount: {{ total_amount }}</h2>
         </div>
-    <button type="submit">Add Loan</button>
-</form>
-</section>
+
+        <div class="loan-table">
+        <table>
+            <thead>
+                <tr>
+                    <th class="column">Loan Name</th>
+                    <th class="column">Amount</th>
+                    <th class="column">Interest Rate</th>
+                    <th class="column">Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                    <tr>
+                        <td class="row">{{ loan.loan_name }}</td>
+                        <td class="row">{{ loan.amount }}</td>
+                        <td class="row">{{ loan.interest_rate }}%</td>
+                        <td class="row">{{ loan.due_date }}</td>
+                        <td class="row"><form method="post" action="{% url 'loan_delete' loan.id %}">
+                            {% csrf_token %}
+                            <button class="delete-button" type="submit" onclick="return confirm('Are you sure you want to delete this loan?');">Delete</button>
+                        </form></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+    {% else %}
+        <p class="no-loans">No loans found for this user.</p>
+    {% endif %}
+
+
+    <section class="add-loan">
+    <form method="post">
+        <h2>Add a New Loan</h2>
+        <p>Fill out the form below to add a new loan.</p>
+        {% csrf_token %}
+            <div class="formset-container">
+                {% for field in loan_form %}
+                    <div class="formset-form">
+                        {{ field.label_tag }} {{ field }} {{ field.errors }}   
+                    </div>
+                {% endfor %}
+            </div>
+        <button class="add-loan-button" type="submit">Add Loan</button>
+    </form>
+    </section>
+    </section>
+</main>
 
 {% endblock %}

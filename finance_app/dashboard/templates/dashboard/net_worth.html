@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css_files %}
-  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/net_worth.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
 {% endblock %}
 
@@ -15,12 +15,14 @@
 
 {% include 'dashboard/include/header.html' %}
 
-<section>
-    <h1>Welcome {{ user.username }} to your net worth management page</h1>
-    <img src="{% static 'dashboard/images/chart_report1.jpg' %}" alt="Net Worth Dashboard">
-</section>
+<main class="main-content">
+    <section class="welcome-section">
+        <h1>Welcome {{ user.username }} to your net worth management page</h1>
+        <img src="{% static 'dashboard/images/chart_report1.jpg' %}" alt="Net Worth Dashboard">
+    </section>
 
-<section>
-    <div>{{ line_chart|safe }}</div>
-</section>
+    <section class="net-worth-creation-section">
+        <div class="chart-container">{{ line_chart|safe }}</div>
+    </section>
+</main>
 {% endblock %}

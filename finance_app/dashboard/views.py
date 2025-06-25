@@ -32,7 +32,7 @@ from .functions.calculating_total_amount import calculate_total_loan_amount
 
 # Create your views here.
 AllocationFormSet = formset_factory(
-    AllocationForm, extra=3, can_delete=True, max_num=20, min_num=1
+    AllocationForm, extra=6, can_delete=True, max_num=20, min_num=1
 )
 InvestmentFormSet = formset_factory(
     InvestmentForm, extra=3, can_delete=True, max_num=20, min_num=1

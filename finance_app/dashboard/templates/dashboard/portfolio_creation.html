@@ -8,52 +8,55 @@
 {%endblock %} 
 
 {% block css_files %}
-  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/budget_creation.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'dashboard/portfolio_creation.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/header.css' %}">
 {% endblock %}
 
 
 {% block content %} 
 {% include 'dashboard/include/header.html' %}
+<main class="main-content">
 
-<section>
-  <h1>Welcome {{ user.username }} to your portfolio management page</h1>
-  <img src="{% static 'dashboard/images/investor2.jpg' %}" alt="Portfolio Dashboard">
-</section>
+  <section class="welcome-section">
+    <h1>Welcome {{ user.username }} to your portfolio management page</h1>
+    <img src="{% static 'dashboard/images/investor2.jpg' %}" alt="Portfolio Dashboard">
+  </section>
 
-<section>
-  <h2>Create a new portfolio</h2>
-  <form method="POST">
-    
-    {% csrf_token %}
-    {{ investment_form.management_form }}
-    {{ message }}
 
-    <div>
-      {% for investment in investment_form %}
-         <div class="formset-form">
-            {% for field in investment %}
-                {{ field.label_tag }} {{ field }} {{ field.errors }}
-            {% endfor %}
-         </div>
-      {% endfor %}
+  <section class="portfolio-creation-section">
+    <h2>Create a new portfolio</h2>
+    <form method="POST">
+      
+      {% csrf_token %}
+      {{ investment_form.management_form }}
+      {{ message }}
 
-        <button type="button" id="add-investment" name='action'>Add Investment</button>
-        <button type="submit" name='action' value='submit_portfolio'>Submit Portfolio</button>
-        <button type="submit" name='action' value='save_portfolio_value'>Save Portfolio Value</button>
+      <div class="formset-container">
+        {% for investment in investment_form %}
+          <div class="formset-form">
+              {% for field in investment %}
+                  {{ field.label_tag }} {{ field }} {{ field.errors }}
+              {% endfor %}
+          </div>
+        {% endfor %}
+          <button class="investment-buttons" type="button" id="add-investment" name='action'>Add Investment</button>
+          <button class="investment-buttons" type="submit" name='action' value='submit_portfolio'>Submit Portfolio</button>
+          <button class="investment-buttons" type="submit" name='action' value='save_portfolio_value'>Save Portfolio Value</button>
 
-    </div>
-  </form>
-</section>
+      </div>
+    </form>
+  </section>
 
-<section>
-  <h1>Your Portfolio Chart</h1>
-  <div>{{ pie_chart|safe }}</div>
-</section>
+  <div class="portfolio-chart-section-main">
+    <section class="portfolio-chart-section">
+      <h1>Your Portfolio Pie Chart</h1>
+      <div class="chart-container">{{ pie_chart|safe }}</div>
+    </section>
 
-<section>
-  <h1>Your Portfolio Chart</h1>
-  <div>{{ line_chart|safe }}</div>
-</section>
-
+    <section class="portfolio-chart-section">
+      <h1>Your Portfolio Over Time Line Chart</h1>
+      <div class="chart-container">{{ line_chart|safe }}</div>
+    </section>
+  </div>
+</main>
 {% endblock %}

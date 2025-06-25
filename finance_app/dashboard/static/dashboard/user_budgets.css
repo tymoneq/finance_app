@@ -1,0 +1,90 @@
+.main-content {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  margin-bottom: 80rem;
+}
+
+.welcome-section {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 20rem;
+  left: 50%;
+}
+
+.welcome-section h1,
+.welcome-image {
+  display: inline-block;
+}
+.welcome-section h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  margin: 0;
+  transform: translate(5%, -1200%);
+}
+
+.welcome-image {
+  width: 50%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  transform: translateX(10%);
+  width: 30rem;
+}
+.budget-section {
+  position: absolute;
+  top: 50rem;
+  left: 58%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.5rem;
+}
+
+.budget-card {
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100%;
+  height: auto;
+}
+
+.budget-card a {
+  text-decoration: none;
+  color: black;
+}
+
+.budget-card a:hover,
+.budget-card a:active,
+.budget-card a:focus {
+  color: white;
+}
+
+.delete-form  {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-size: 1em;
+  margin: 0px;
+  border-radius: 7px;
+}
+
+.delete-form:hover,
+.delete-form:active {
+  background-color: rgb(255, 0, 0);
+  color: rgb(255, 255, 255);
+  font-size: 1.1em;
+  font-weight: bold;
+}

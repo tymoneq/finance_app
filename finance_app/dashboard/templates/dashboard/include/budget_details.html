@@ -1,8 +1,8 @@
-<section>
+<section class="budget-details">
   <h2>Budget Name: {{ budget.budget_name }}</h2>
   <p>Budget Amount: {{ budget.amount }}</p>
 
-  <div>
+  <div class="budget-details__categories">
     <p>Categories and allocations percentage:</p>
     <ul>
       {% for category in budget.allocations.all %}

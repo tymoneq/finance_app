@@ -1,0 +1,144 @@
+.container {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  margin-bottom: 150rem;
+}
+
+.loan-header {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 20rem;
+  left: 50%;
+}
+
+.loan-header h1,
+.loan-header img {
+  display: inline-block;
+}
+
+.loan-header h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  margin: 0;
+  transform: translate(5%, -1200%);
+}
+.loan-header img {
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  transform: translateX(10%);
+  width: 30rem;
+}
+
+.loan-summary-container {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 5px 10px 10px 7px #888888;
+  padding: 1rem;
+  background-color: rgb(248, 102, 4);
+  width: 100rem;
+  transform: translate(-50%, -50%);
+  top: 70rem;
+  left: 50%;
+}
+.loan-summary h2 {
+  font-size: 2.5rem;
+  margin: 0.4rem 0;
+}
+.loan-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+.loan-table table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.row,
+.column {
+  padding: 0.5rem;
+  text-align: left;
+  border: 2px solid #ddd;
+}
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.no-loans {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.add-loan {
+  border-collapse: collapse;
+}
+.add-loan h2 {
+  font-size: 2.5rem;
+  margin: 0.4rem 0;
+}
+.add-loan p {
+  font-size: 1.5rem;
+  margin: 0.4rem 0;
+}
+
+.formset-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+}
+
+.formset-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.formset-form input {
+  padding: 0.5rem;
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 5px;
+  font-size: 1em;
+}
+.formset-form label {
+  font-size: 1.2em;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+.add-loan-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(248, 4, 4);
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  width: 50%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1rem;
+}
+.delete-button:hover,
+.delete-button:active,
+.delete-button:focus,
+.add-loan-button:hover,
+.add-loan-button:active,
+.add-loan-button:focus {
+  background-color: darkred;
+}
